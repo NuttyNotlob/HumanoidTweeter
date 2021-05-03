@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Collection of entertainment data</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></head>
+
+<body>
+
+<div class="container">
+    <h1>SteamSpy data</h1>
+
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Name</th>
+            <th>Pos. Reviews</th>
+            <th>Neg. Reviews</th>
+            <th>Owners</th>
+            <th>Recent avg playtime (mins last 2 weeks)</th>
+        </tr>
+        </thead>
+        <tr th:each="steamSpyGame : ${steamSpyGames}">
+            <td th:text="${steamSpyGame.name}"></td>
+            <td th:text="${steamSpyGame.positiveReviews}" style="color: green;">0</td>
+            <td th:text="${steamSpyGame.negativeReviews}" style="color: red;">0</td>
+            <td th:text="${steamSpyGame.owners}">0</td>
+            <td th:text="${steamSpyGame.averageRecentPlay}">0</td>
+        </tr>
+    </table>
+</div>
+
+</body>
+
+</html>
