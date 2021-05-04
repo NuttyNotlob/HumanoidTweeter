@@ -17,6 +17,8 @@ import java.util.Set;
 
 @Service
 public class SteamSpyDataGrabberService {
+    // This service sends a GET request to the SteamSpy API for the top 100 games in the last 2 weeks. This information
+    // is then displayed on the homepage, and is also used in the construction of a tweet for the twitter bot
 
     private static String TOP_100_RECENT_GAMES = "https://steamspy.com/api.php?request=top100in2weeks";
     private static List<SteamSpyGame> steamSpyGames = new ArrayList<>();
@@ -31,14 +33,17 @@ public class SteamSpyDataGrabberService {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(TOP_100_RECENT_GAMES)).build();
 
-        // Send a request for the data
-        HttpResponse<String> httpResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+        // Send a request for the data, and then parse the body received
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body)
+                .thenApply(SteamSpyDataGrabberService::parseData)
+                .join();
 
         // Parse the data into our steamSpyGames list
-        parseData(httpResponse.body());
+        // parseData(httpResponse.body());
     }
 
-    private static void parseData(String dataBody) {
+    private static String parseData(String dataBody) {
         // Setup new game list to add to
         List<SteamSpyGame> newGames = new ArrayList<>();
 
@@ -71,6 +76,8 @@ public class SteamSpyDataGrabberService {
 
         // Update class game list
         steamSpyGames = newGames;
+
+        return null;
     }
 
 }
