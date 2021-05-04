@@ -1,4 +1,4 @@
-package com.abolton.HumanoidTweeter.services;
+package com.abolton.HumanoidTweeter.datastores;
 
 import org.springframework.stereotype.Service;
 
@@ -9,7 +9,7 @@ import java.util.Random;
 @Service
 public class TweetBodyDictionary {
 
-    public String gamerIntros() {
+    public static String gamerIntros() {
         List<String> intros = new ArrayList<>();
         intros.add("Fellow Gamers!"); // 14 chars
         intros.add("Game aficionados,"); // 17 chars
@@ -24,7 +24,7 @@ public class TweetBodyDictionary {
         return intros.get(new Random().nextInt(intros.size()));
     }
 
-    public String gamerOutros() {
+    public static String gamerOutros() {
         List<String> outros = new ArrayList<>();
         outros.add(". Peace out!");
         outros.add(". Later virgins");
