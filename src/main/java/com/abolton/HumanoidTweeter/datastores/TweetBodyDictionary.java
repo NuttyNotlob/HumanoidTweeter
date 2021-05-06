@@ -1,4 +1,4 @@
-package com.abolton.HumanoidTweeter.services;
+package com.abolton.HumanoidTweeter.datastores;
 
 import org.springframework.stereotype.Service;
 

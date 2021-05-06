@@ -1,6 +1,8 @@
 package com.abolton.HumanoidTweeter.services;
 
+import com.abolton.HumanoidTweeter.datastores.TweetBodyDictionary;
 import com.abolton.HumanoidTweeter.models.SteamSpyGame;
+import com.abolton.HumanoidTweeter.models.YoutubeVideo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import twitter4j.TwitterException;
@@ -17,10 +19,14 @@ public class TweetBodyConstructorService {
     @Autowired
     SteamSpyDataGrabberService steamSpyDataGrabberService;
     @Autowired
+    YoutubeDataGrabberService youtubeDataGrabberService;
+    @Autowired
     TweetBodyDictionary tweetBodyDictionary;
 
     private enum APIChoices {
-        STEAMSPY
+        STEAMSPY,
+        YOUTUBE,
+        MOVIEDB
     }
 
     public String getTweetBody() {
@@ -35,13 +41,16 @@ public class TweetBodyConstructorService {
             case STEAMSPY:
                 this.tweetBody = steamspyTweet();
                 break;
+            case YOUTUBE:
+                this.tweetBody = youtubeTweet();
+                break;
             default:
                 this.tweetBody = null;
         }
 
         // Send this tweetBody to the TweetPoster, which will send it through to the Twitter API to post as a status
         System.out.println(tweetBody);
-        // tweetPosterService.makeTweet(tweetBody);
+        tweetPosterService.makeTweet(tweetBody);
     }
 
     private APIChoices chooseAPI() {
@@ -62,6 +71,15 @@ public class TweetBodyConstructorService {
                 " I have played " + game.getName() +
                 " for a whole " + game.getAverageRecentPlay() + " minutes this week"
                 + tweetBodyDictionary.gamerOutros();
+    }
+
+    private String youtubeTweet() {
+        YoutubeVideo popularVideo = youtubeDataGrabberService.getVideos()
+                .get(new Random().nextInt(youtubeDataGrabberService.getVideos().size()));
+
+        youtubeDataGrabberService.addVideoStats(popularVideo);
+
+        return "Can't believe how good " + popularVideo.getTitle() + " was on Youtube, so glad I watched with all " + popularVideo.getViewCount() + " of you";
     }
 
 
