@@ -9,7 +9,7 @@ import java.util.Random;
 @Service
 public class TweetBodyDictionary {
 
-    public static String gamerIntros() {
+    public String gamerIntros() {
         List<String> intros = new ArrayList<>();
         intros.add("Fellow Gamers!"); // 14 chars
         intros.add("Game aficionados,"); // 17 chars
@@ -24,7 +24,7 @@ public class TweetBodyDictionary {
         return intros.get(new Random().nextInt(intros.size()));
     }
 
-    public static String gamerOutros() {
+    public String gamerOutros() {
         List<String> outros = new ArrayList<>();
         outros.add(". Peace out!");
         outros.add(". Later virgins");
