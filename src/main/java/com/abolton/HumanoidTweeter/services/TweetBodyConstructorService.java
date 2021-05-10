@@ -56,6 +56,8 @@ public class TweetBodyConstructorService {
 
         // Send this tweetBody to the TweetPoster, which will send it through to the Twitter API to post as a status
         System.out.println(tweetBody);
+
+
         tweetPosterService.makeTweet(tweetBody);
     }
 
@@ -94,7 +96,8 @@ public class TweetBodyConstructorService {
         Movie popularMovie = movieDBDataGrabberService.getMovies()
                 .get(new Random().nextInt(movieDBDataGrabberService.getMovies().size()));
 
-        return " Have been watching " + popularMovie.getTitle() + " non-stop since " + popularMovie.getReleaseDate()
-                + ". I give it a score of " + popularMovie.getReviewAverage() + " outta 10, just like the rest of ya";
+        return tweetBodyDictionary.movieIntros() + " Have been watching " + popularMovie.getTitle() + " non-stop since "
+                + popularMovie.getReleaseDate() + ". I give it a score of " + popularMovie.getReviewAverage()
+                + " outta 10, just like the rest of ya" + tweetBodyDictionary.movieOutros();
     }
 }
