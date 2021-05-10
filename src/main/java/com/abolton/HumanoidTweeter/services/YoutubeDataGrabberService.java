@@ -50,7 +50,7 @@ public class YoutubeDataGrabberService {
     }
 
     private static String parseData(String dataBody) {
-        // Setup new game list to add to
+        // Setup new youtube list to add to
         List<YoutubeVideo> popularVideos = new ArrayList<>();
 
         // The text we get from the YoutubeAPI is a JSON, with an array of JSONs embedded in the 'items' key which

@@ -1,6 +1,7 @@
 package com.abolton.HumanoidTweeter.services;
 
 import com.abolton.HumanoidTweeter.datastores.TweetBodyDictionary;
+import com.abolton.HumanoidTweeter.models.Movie;
 import com.abolton.HumanoidTweeter.models.SteamSpyGame;
 import com.abolton.HumanoidTweeter.models.YoutubeVideo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class TweetBodyConstructorService {
     SteamSpyDataGrabberService steamSpyDataGrabberService;
     @Autowired
     YoutubeDataGrabberService youtubeDataGrabberService;
+    @Autowired
+    MovieDBDataGrabberService movieDBDataGrabberService;
     @Autowired
     TweetBodyDictionary tweetBodyDictionary;
 
@@ -44,12 +47,17 @@ public class TweetBodyConstructorService {
             case YOUTUBE:
                 this.tweetBody = youtubeTweet();
                 break;
+            case MOVIEDB:
+                this.tweetBody = movieTweet();
+                break;
             default:
                 this.tweetBody = null;
         }
 
         // Send this tweetBody to the TweetPoster, which will send it through to the Twitter API to post as a status
         System.out.println(tweetBody);
+
+
         tweetPosterService.makeTweet(tweetBody);
     }
 
@@ -79,9 +87,17 @@ public class TweetBodyConstructorService {
 
         youtubeDataGrabberService.addVideoStats(popularVideo);
 
-        return "Can't believe how good " + popularVideo.getTitle() + " was on Youtube, so glad I watched with all " + popularVideo.getViewCount() + " of you";
+        return tweetBodyDictionary.youtubeIntros() + " Just watched " + popularVideo.getTitle() +
+                " on Youtube, so glad I watched with all " + popularVideo.getViewCount() + " of you"
+                + tweetBodyDictionary.youtubeOutros();
     }
 
+    private String movieTweet() {
+        Movie popularMovie = movieDBDataGrabberService.getMovies()
+                .get(new Random().nextInt(movieDBDataGrabberService.getMovies().size()));
 
-
+        return tweetBodyDictionary.movieIntros() + " Have been watching " + popularMovie.getTitle() + " non-stop since "
+                + popularMovie.getReleaseDate() + ". I give it a score of " + popularMovie.getReviewAverage()
+                + " outta 10, just like the rest of ya" + tweetBodyDictionary.movieOutros();
+    }
 }
