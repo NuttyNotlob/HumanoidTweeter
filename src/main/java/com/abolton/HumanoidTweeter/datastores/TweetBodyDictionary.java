@@ -40,6 +40,7 @@ public class TweetBodyDictionary {
         outros.add(", so happy to join y'all");
         outros.add(", 'tis a great day!");
         outros.add(", care to join me?");
+        outros.add(". Read it and weep");
 
         return outros.get(new Random().nextInt(outros.size()));
     }

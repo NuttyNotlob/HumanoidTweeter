@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import twitter4j.TwitterException;
 
 import javax.annotation.PostConstruct;
+import java.util.Locale;
 import java.util.Random;
+import java.util.Scanner;
 
 @Service
 public class TweetBodyConstructorService {
@@ -57,8 +59,13 @@ public class TweetBodyConstructorService {
         // Send this tweetBody to the TweetPoster, which will send it through to the Twitter API to post as a status
         System.out.println(tweetBody);
 
-
-        tweetPosterService.makeTweet(tweetBody);
+        // System requires a check input to make sure I'm happy with the tweet going out - just to make sure nothing
+        // completely out there goes through
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please type 'tweet' to tweet the created tweet body, or anything else to continue");
+        if (scanner.nextLine().toLowerCase().equals("tweet")) {
+            tweetPosterService.makeTweet(tweetBody);
+        }
     }
 
     private APIChoices chooseAPI() {
